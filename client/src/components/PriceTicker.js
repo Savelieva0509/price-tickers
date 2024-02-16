@@ -1,13 +1,29 @@
+// src/components/PriceTicker.js
+
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { selectTickers } from "../redux/tickersSlice";
+import { updateTickers, selectTickers } from "../redux/tickersSlice";
+import io from "socket.io-client";
 
 const PriceTicker = () => {
   const dispatch = useDispatch();
   const tickers = useSelector(selectTickers);
 
   useEffect(() => {
-    dispatch({ type: "socket/connect" });
+    const socket = io("http://localhost:4000"); // Убедитесь, что это соответствует вашему серверу и порту
+
+    // Установка соединения при монтировании компонента
+    socket.emit("start");
+
+    // Слушание события "ticker" для обновления данных
+    socket.on("ticker", (data) => {
+      dispatch(updateTickers(data));
+    });
+
+    // Отписка от события при размонтировании компонента
+    return () => {
+      socket.disconnect();
+    };
   }, [dispatch]);
 
   return (
