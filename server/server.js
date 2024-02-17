@@ -28,12 +28,12 @@ function utcDate() {
 
 function getQuotes(socket) {
 
-  const quotes = tickers.map(ticker => ({
+  const quotes = tickers.map((ticker) => ({
     ticker,
-    exchange: 'NASDAQ',
+    exchange: "NASDAQ",
     price: randomValue(100, 300, 2),
     change: randomValue(0, 200, 2),
-    change_percent: randomValue(0, 1, 2),
+    change_percent: randomValue(0, 2, 2),
     dividend: randomValue(0, 1, 2),
     yield: randomValue(0, 2, 2),
     last_trade_time: utcDate(),

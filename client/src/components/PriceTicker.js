@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 import "bootstrap/dist/css/bootstrap.min.css";
 import fetchTickers from "../redux/operations";
 import { selectTickers, selectStatus, selectError } from "../redux/selectors";
@@ -46,8 +47,24 @@ const PriceTicker = () => {
             <tr key={ticker.ticker}>
               <td>{ticker.ticker}</td>
               <td>${ticker.price}</td>
-              <td>{ticker.change_percent}%</td>
-              <td>{ticker.change}</td>
+              <td>
+                {ticker.change_percent > 0.99 ? (
+                  <span style={{ color: "green" }}>
+                    <FaArrowUp /> {ticker.change_percent}%
+                  </span>
+                ) : (
+                  <span style={{ color: "red" }}>
+                    <FaArrowDown /> {ticker.change_percent}%
+                  </span>
+                )}
+              </td>
+              <td
+                style={{
+                  color: ticker.change_percent > 0.99 ? "green" : "red",
+                }}
+              >
+                {ticker.change}
+              </td>
             </tr>
           ))}
         </tbody>
