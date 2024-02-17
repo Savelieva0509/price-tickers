@@ -2,7 +2,8 @@
 
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateTickers, selectTickers } from "../redux/tickersSlice";
+import { updateTickers } from "../redux/tickersSlice";
+import { selectTickers } from "../redux/selectors";
 import io from "socket.io-client";
 
 const PriceTicker = () => {
