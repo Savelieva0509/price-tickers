@@ -10,7 +10,7 @@ export const tickerSlice = createSlice({
   reducers: {
     updateTickers: (state, action) => {
       state.tickers = action.payload;
-      },
+    },
     updateStatus: (state, action) => {
       state.status = action.payload;
     },
