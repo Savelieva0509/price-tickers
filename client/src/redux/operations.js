@@ -22,7 +22,6 @@ const fetchTickers = () => (dispatch) => {
     });
 
     socket.on("disconnect", () => {
-      console.log("Disconnected from the server.");
       const error = new Error("Disconnected from the server.");
       dispatch(updateError(error.message));
       dispatch(updateStatus("failed"));

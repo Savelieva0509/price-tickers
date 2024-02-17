@@ -23,8 +23,9 @@ const PriceTicker = () => {
     return (
       <div>
         <p>Error: {error}</p>
-        {error === "Disconnected from the server." && (
-          <p>The server is currently offline. Please try again later.</p>
+            {error === "Disconnected from the server." && (
+                
+          <p class="alert alert-warning" role="alert">The server is currently offline. Please try again later.</p>
         )}
       </div>
     );
