@@ -6,6 +6,8 @@ const socketMiddleware = () => {
 
   return (store) => (next) => (action) => {
     if (action.type === "socket/connect") {
+      socket.emit("start");
+
       socket.on("ticker", (data) => {
         store.dispatch(updateTickers(data));
       });

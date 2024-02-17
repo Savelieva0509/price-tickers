@@ -1,42 +1,57 @@
-// src/components/PriceTicker.js
-
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateTickers } from "../redux/tickersSlice";
-import { selectTickers } from "../redux/selectors";
-import io from "socket.io-client";
+import "bootstrap/dist/css/bootstrap.min.css";
+import fetchTickers from "../redux/operations";
+import { selectTickers, selectStatus, selectError } from "../redux/selectors";
 
 const PriceTicker = () => {
   const dispatch = useDispatch();
   const tickers = useSelector(selectTickers);
+  const status = useSelector(selectStatus);
+  const error = useSelector(selectError);
 
   useEffect(() => {
-    const socket = io("http://localhost:4000"); // Убедитесь, что это соответствует вашему серверу и порту
-
-    // Установка соединения при монтировании компонента
-    socket.emit("start");
-
-    // Слушание события "ticker" для обновления данных
-    socket.on("ticker", (data) => {
-      dispatch(updateTickers(data));
-    });
-
-    // Отписка от события при размонтировании компонента
-    return () => {
-      socket.disconnect();
-    };
+    dispatch(fetchTickers());
   }, [dispatch]);
 
+  if (status === "loading") {
+    return <div>Loading...</div>;
+  }
+
+  if (status === "failed") {
+    return (
+      <div>
+        <p>Error: {error}</p>
+        {error === "Disconnected from the server." && (
+          <p>The server is currently offline. Please try again later.</p>
+        )}
+      </div>
+    );
+  }
+
   return (
-    <div>
+    <div className="container">
       <h2>Price Tickers</h2>
-      <ul>
-        {tickers.map((ticker) => (
-          <li key={ticker.ticker}>
-            {ticker.ticker}: ${ticker.price} ({ticker.change_percent}%)
-          </li>
-        ))}
-      </ul>
+      <table class="table table-bordered border-dark">
+        <thead class="table-dark">
+          <tr>
+            <th>Ticker</th>
+            <th>Price</th>
+            <th>Change Percent</th>
+            <th>Change</th>
+          </tr>
+        </thead>
+        <tbody>
+          {tickers.map((ticker) => (
+            <tr key={ticker.ticker}>
+              <td>{ticker.ticker}</td>
+              <td>${ticker.price}</td>
+              <td>{ticker.change_percent}%</td>
+              <td>{ticker.change}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };
