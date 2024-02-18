@@ -1,7 +1,26 @@
-import React from "react";
 import { render } from "@testing-library/react";
-import PriceTicker from "./PriceTicker";
+import { Provider } from "react-redux";
+import configureMockStore from "redux-mock-store";
+import thunk from "redux-thunk";
+import PriceTicker from "./PriceTicker.js"; 
+import fetchTickers from "../redux/operations";
 
-test("renders PriceTicker component", () => {
-  render(<PriceTicker />);
+const mockStore = configureMockStore([thunk]);
+
+describe("PriceTicker", () => {
+  it("should render PriceTicker component", () => {
+    const store = mockStore({
+      tickers: {
+        tickers: [],
+        status: "idle",
+        error: null,
+      },
+    });
+
+    render(
+      <Provider store={store}>
+        <PriceTicker />
+      </Provider>
+    );
+  });
 });
