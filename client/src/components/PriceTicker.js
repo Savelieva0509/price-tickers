@@ -13,7 +13,6 @@ const PriceTicker = () => {
   const error = useSelector(selectError);
 
   const [isDeleting, setIsDeleting] = useState({});
-  const [showAll, setShowAll] = useState(true);
 
   useEffect(() => {
     dispatch(fetchTickers());
@@ -52,13 +51,8 @@ const PriceTicker = () => {
     setIsDeleting({});
   };
 
-//   const filteredTickers = showAll
-//     ? tickers
-//     : tickers.filter((ticker) => !isDeleting[ticker.ticker]);
-
   return (
-    <div className="container">
-      <h2>Price Tickers</h2>
+    <div className="container pt-4">
       <table className="table table-bordered border-dark">
         <thead className="table-dark">
           <tr>
@@ -66,7 +60,7 @@ const PriceTicker = () => {
               <button
                 onClick={handleShowAll}
                 type="button"
-                class="btn btn-light"
+                className="btn btn-light"
               >
                 Show all
               </button>

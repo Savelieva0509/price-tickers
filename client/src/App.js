@@ -1,11 +1,10 @@
-import './App.css';
+import "./App.css";
 import PriceTicker from "./components/PriceTicker";
-
 
 function App() {
   return (
     <div className="App">
-      <PriceTicker/>
+      <PriceTicker />
     </div>
   );
 }
