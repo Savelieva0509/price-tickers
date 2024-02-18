@@ -1,7 +1,7 @@
 <h1 align="center"> Price Tickers Streaming App </h1>
 
 <p align="center">
-<img src="src/img/prev.jpg" width="500">
+<img src="client/src/img/prev.jpg" width="500">
 </p>
 
 This web application allows users to view and manage real-time stock price tickers. It utilizes web sockets for live updates and provides features like stopping and deleting tickers.
