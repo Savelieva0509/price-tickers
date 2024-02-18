@@ -7,3 +7,6 @@ socket.deleteTicker = function (ticker) {
   this.emit("delete", ticker);
 };
 
+socket.showAll = function () {
+  this.emit("showAll");
+};

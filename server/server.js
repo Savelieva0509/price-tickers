@@ -69,6 +69,28 @@ function trackTickers(socket) {
   socket.on("disconnect", function () {
     clearInterval(timer);
   });
+
+  socket.on("delete", (ticker) => {
+    console.log(`Received delete request for ticker: ${ticker}`);
+    if (connectedClients[socket.id]) {
+      const index = connectedClients[socket.id].tickers.indexOf(ticker);
+      if (index !== -1) {
+        connectedClients[socket.id].tickers.splice(index, 1);
+        // Отправляем сообщение всем клиентам, чтобы они прекратили обновление тикера
+        socketServer.emit("tickerDeleted", ticker);
+        console.log(`Ticker ${ticker} deleted`);
+      }
+    }
+  });
+
+  socket.on("showAll", () => {
+    console.log("Received showAll request");
+    if (connectedClients[socket.id]) {
+      connectedClients[socket.id].tickers = tickers.slice();
+      // Отправляем обновленные тикеры обратно клиенту
+      getQuotes(socket, connectedClients[socket.id].tickers);
+    }
+  });
 }
 
 const app = express();
@@ -92,19 +114,6 @@ socketServer.on("connection", (socket) => {
       tickers: tickers.slice(), // Копирование массива тикеров
     };
     trackTickers(socket);
-  });
-
-  socket.on("delete", (ticker) => {
-    console.log(`Received delete request for ticker: ${ticker}`);
-    if (connectedClients[socket.id]) {
-      const index = connectedClients[socket.id].tickers.indexOf(ticker);
-      if (index !== -1) {
-        connectedClients[socket.id].tickers.splice(index, 1);
-        // Отправляем сообщение всем клиентам, чтобы они прекратили обновление тикера
-        socketServer.emit("tickerDeleted", ticker);
-        console.log(`Ticker ${ticker} deleted`);
-      }
-    }
   });
 
   socket.on("disconnect", () => {
