@@ -36,13 +36,10 @@ const PriceTicker = () => {
   }
 
   const handleDeleteTicker = (ticker) => {
-    // Обновляем состояние для отображения процесса удаления для конкретного тикера
     setIsDeleting((prevIsDeleting) => ({
       ...prevIsDeleting,
       [ticker.ticker]: true,
     }));
-
-    // Отправляем запрос на сервер для удаления тикера из списка обновляемых
     socket.deleteTicker(ticker.ticker);
   };
 
